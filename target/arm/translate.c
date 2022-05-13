@@ -30,8 +30,10 @@
 #include "qemu/bitops.h"
 #include "arm_ldst.h"
 #include "semihosting/semihost.h"
+
 #include "exec/helper-proto.h"
 #include "exec/helper-gen.h"
+
 #include "exec/log.h"
 #include "cpregs.h"
 
@@ -64,6 +66,38 @@ static const char * const regnames[] =
     { "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7",
       "r8", "r9", "r10", "r11", "r12", "r13", "r14", "pc" };
 
+// paddr to start watching
+//#define MAP_START_PADDR 0x80000000
+//// size of memory region
+//#define MAP_SIZE        0x20000000
+//#define MAP_END_PADDR   (MAP_START_PADDR + MAP_SIZE)
+//#define MAP_GRAN_SHF    4   // 0x10 granularity
+//
+//#define INDX_OFF        (MAP_START_PADDR >> MAP_GRAN_SHF)
+//#define BB_MAP_INDEX(addr)  ((addr - INDX_OFF) >> 3)
+//#define BB_MAP_BIT(addr)    (addr & ((1<<3)-1))
+//
+//unsigned char bb_map[(MAP_SIZE >> (MAP_GRAN_SHF + 3))];
+#include "bb-enter-helper.h"
+#define MAP_SIZE (1U << 16)
+
+void HELPER(bb_enter)(CPUARMState *env)
+{
+    int started = get_started_bb();
+    if (started == 0) {
+        printf("Not started\n");
+        return;
+    }  else {
+        printf("Started.\n");
+    }
+
+//    uint64_t cur_loc = env->pc;
+//    cur_loc = (cur_loc >> 4) ^ (cur_loc << 8);
+//    cur_loc &= (MAP_SIZE - 1);
+//    TCGv cur_loc_v = tcg_const_tl(cur_loc);
+//
+//    tcg_temp_free(cur_loc_v);
+}
 
 /* initialize TCG globals.  */
 void arm_translate_init(void)
@@ -263,6 +297,7 @@ static inline int get_a32_user_mem_index(DisasContext *s)
         g_assert_not_reached();
     }
 }
+
 
 /* The architectural value of PC.  */
 static uint32_t read_pc(DisasContext *s)
@@ -9409,6 +9444,7 @@ static void arm_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
 
 static void arm_tr_tb_start(DisasContextBase *dcbase, CPUState *cpu)
 {
+    gen_helper_bb_enter(cpu_env);
     DisasContext *dc = container_of(dcbase, DisasContext, base);
 
     /* A note on handling of the condexec (IT) bits:

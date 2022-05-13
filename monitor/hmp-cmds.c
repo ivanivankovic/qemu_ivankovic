@@ -69,6 +69,45 @@ bool hmp_handle_error(Monitor *mon, Error *err)
     return false;
 }
 
+void hmp_hello_world(Monitor *mon, const QDict *qdict)
+{
+    const char *message = qdict_get_try_str(qdict, "message");
+    Error *err = NULL;
+
+    qmp_hello_world(!!message, message, &err);
+    if (err) {
+        monitor_printf(mon, "%s\n", error_get_pretty(err));
+        error_free(err);
+        return;
+    }
+}
+
+void hmp_start_bb_enter(Monitor *mon, const QDict *qdict)
+{
+    Error *err = NULL;
+
+    qmp_start_bb_enter(&err);
+    if (err) {
+        monitor_printf(mon, "%s\n", error_get_pretty(err));
+        error_free(err);
+        return;
+    }
+}
+
+void hmp_stop_bb_enter(Monitor *mon, const QDict *qdict)
+{
+    Error *err = NULL;
+
+    qmp_stop_bb_enter(&err);
+    if (err) {
+        monitor_printf(mon, "%s\n", error_get_pretty(err));
+        error_free(err);
+        return;
+    }
+}
+
+
+
 /*
  * Produce a strList from a comma separated list.
  * A NULL or empty input string return NULL.

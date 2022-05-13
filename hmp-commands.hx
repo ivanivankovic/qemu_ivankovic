@@ -1750,3 +1750,40 @@ ERST
                       "\n\t\t\t -b to specify dirty bitmap as method of calculation)",
         .cmd        = hmp_calc_dirty_rate,
     },
+
+   {
+       .name       = "hello-world",
+       .args_type  = "message:s?",
+       .params     = "hello-world [message]",
+       .help       = "Print message to the standard output",
+       .cmd        = hmp_hello_world,
+   },
+
+SRST
+``hello_world`` *message*
+  Print message to the standard output
+ERST
+
+   {
+       .name       = "start-bb-enter",
+       .params     = "start-bb-enter",
+       .help       = "Start logging basic blocks",
+       .cmd        = hmp_start_bb_enter,
+   },
+
+SRST
+``start_bb_enter``
+  Print message to the standard output
+ERST
+
+   {
+       .name       = "stop-bb-enter",
+       .params     = "stop-bb-enter",
+       .help       = "Stop logging basic blocks",
+       .cmd        = hmp_start_bb_enter,
+   },
+
+SRST
+``start_bb_enter``
+  Print message to the standard output
+ERST

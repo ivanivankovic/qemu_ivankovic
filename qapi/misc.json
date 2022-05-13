@@ -553,3 +553,41 @@
 ##
 { 'event': 'RTC_CHANGE',
   'data': { 'offset': 'int', 'qom-path': 'str' } }
+
+
+##
+# @hello-world:
+#
+# Print a client provided string to the standard output stream.
+#
+# @message: string to be printed
+#
+# Returns: Nothing on success.
+#
+# Notes: if @message is not provided, the "Hello, world" string will
+#        be printed instead
+#
+# Since: <next qemu stable release, eg. 1.0>
+##
+{ 'command': 'hello-world', 'data': { '*message': 'str' } }
+
+
+##
+# @start-bb-enter:
+#
+# Print a client provided string to the standard output stream.
+#
+# Returns: Nothing on success.
+#
+##
+{ 'command': 'start-bb-enter'}
+
+##
+# @stop-bb-enter:
+#
+# Print a client provided string to the standard output stream.
+#
+# Returns: Nothing on success.
+#
+##
+{ 'command': 'stop-bb-enter'}

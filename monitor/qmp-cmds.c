@@ -43,6 +43,7 @@
 #include "hw/acpi/acpi_dev_interface.h"
 #include "hw/intc/intc.h"
 #include "hw/rdma/rdma.h"
+#include "target/arm/bb-enter-helper.h"
 
 NameInfo *qmp_query_name(Error **errp)
 {
@@ -441,3 +442,21 @@ HumanReadableText *qmp_x_query_irq(Error **errp)
 
     return human_readable_text_from_str(buf);
 }
+
+void qmp_hello_world(bool has_message, const char *message, Error **errp)
+{
+    if (has_message) {
+        printf("%s\n", message);
+    } else {
+        printf("Hello, world\n");
+    }
+}
+
+void qmp_start_bb_enter(Error **errp){
+    start_bb_enter();
+}
+
+void qmp_stop_bb_enter(Error **errp){
+    stop_bb_enter();
+}
+
