@@ -1787,3 +1787,27 @@ SRST
 ``start_bb_enter``
   Print message to the standard output
 ERST
+
+   {
+       .name       = "clear-bb-enter",
+       .params     = "clear-bb-enter",
+       .help       = "Clear logging of basic blocks",
+       .cmd        = hmp_clear_bb_enter,
+   },
+
+SRST
+``clear_bb_enter``
+  Print message to the standard output
+ERST
+
+   {
+       .name       = "save-bb-enter",
+       .params     = "save-bb-enter",
+       .help       = "Save details of logging basic blocks",
+       .cmd        = hmp_save_bb_enter,
+   },
+
+SRST
+``save_bb_enter``
+  Print message to the standard output
+ERST

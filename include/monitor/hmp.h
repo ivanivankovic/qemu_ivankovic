@@ -136,5 +136,7 @@ void hmp_human_readable_text_helper(Monitor *mon,
 void hmp_hello_world(Monitor *mon, const QDict *qdict);
 void hmp_stop_bb_enter(Monitor *mon, const QDict *qdict);
 void hmp_start_bb_enter(Monitor *mon, const QDict *qdict);
+void hmp_clear_bb_enter(Monitor *mon, const QDict *qdict);
+void hmp_save_bb_enter(Monitor *mon, const QDict *qdict);
 
 #endif

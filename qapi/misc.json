@@ -591,3 +591,23 @@
 #
 ##
 { 'command': 'stop-bb-enter'}
+
+##
+# @clear-bb-enter:
+#
+# Print a client provided string to the standard output stream.
+#
+# Returns: Nothing on success.
+#
+##
+{ 'command': 'clear-bb-enter'}
+
+##
+# @save-bb-enter:
+#
+# Print a client provided string to the standard output stream.
+#
+# Returns: Nothing on success.
+#
+##
+{ 'command': 'save-bb-enter'}

@@ -460,3 +460,10 @@ void qmp_stop_bb_enter(Error **errp){
     stop_bb_enter();
 }
 
+void qmp_clear_bb_enter(Error **errp){
+    clear_bb_enter();
+}
+
+void qmp_save_bb_enter(Error **errp){
+    save_bb_enter();
+}

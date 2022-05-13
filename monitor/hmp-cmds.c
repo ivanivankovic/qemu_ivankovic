@@ -106,6 +106,30 @@ void hmp_stop_bb_enter(Monitor *mon, const QDict *qdict)
     }
 }
 
+void hmp_clear_bb_enter(Monitor *mon, const QDict *qdict)
+{
+    Error *err = NULL;
+
+    qmp_clear_bb_enter(&err);
+    if (err) {
+        monitor_printf(mon, "%s\n", error_get_pretty(err));
+        error_free(err);
+        return;
+    }
+}
+
+void hmp_save_bb_enter(Monitor *mon, const QDict *qdict)
+{
+    Error *err = NULL;
+
+    qmp_save_bb_enter(&err);
+    if (err) {
+        monitor_printf(mon, "%s\n", error_get_pretty(err));
+        error_free(err);
+        return;
+    }
+}
+
 
 
 /*
