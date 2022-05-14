@@ -35,7 +35,6 @@ arm_ss.add(files(
   'vec_helper.c',
   'vfp_helper.c',
   'cpu_tcg.c',
-  'bb-enter-helper.c',
 ))
 arm_ss.add(zlib)
 

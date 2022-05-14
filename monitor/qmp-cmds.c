@@ -43,7 +43,7 @@
 #include "hw/acpi/acpi_dev_interface.h"
 #include "hw/intc/intc.h"
 #include "hw/rdma/rdma.h"
-#include "target/arm/bb-enter-helper.h"
+#include "accel/tcg/bb-enter-helper.h"
 
 NameInfo *qmp_query_name(Error **errp)
 {
