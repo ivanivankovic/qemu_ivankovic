@@ -80,6 +80,7 @@ target_ulong afl_prev_loc = 0;
 static unsigned char dummy[MAP_SIZE];
 unsigned char *afl_area_ptr = dummy;
 void bb_enter(target_ulong);
+int client_send_bitmap(void);
 target_ulong cur_loc = 0;
 
 inline uint64_t AFL_readLE64(const void *memPtr) {
@@ -141,6 +142,68 @@ void HELPER(afl_maybe_log)(target_ulong cur_loc) {
   afl_prev_loc = cur_loc >> 1;
 }
 
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <netdb.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <errno.h>
+#include <arpa/inet.h> 
+
+int client_send_bitmap(void)
+{
+    int sockfd = 0;
+    char recvBuff[1024];
+    struct sockaddr_in serv_addr; 
+
+    memset(recvBuff, '0',sizeof(recvBuff));
+    if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+    {
+        printf("\n Error : Could not create socket \n");
+        return 1;
+    } 
+
+    memset(&serv_addr, '0', sizeof(serv_addr)); 
+
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(5000); 
+
+    if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)<=0)
+    {
+        printf("\n inet_pton error occured\n");
+        return 1;
+    } 
+
+    if( connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
+    {
+       printf("\n Error : Connect Failed \n");
+       return 1;
+    }
+
+//    unsigned char sendArray[2050];
+//    for (int i= 0 ;i<2050;i++){
+//        sendArray[i] = afl_area_ptr[i];
+//    }
+
+ //   size_t write_result = write(sockfd, &sendArray, sizeof(unsigned char)*2050);
+    size_t write_result = write(sockfd, &dummy, sizeof(unsigned char)*MAP_SIZE);
+    if (write_result) {
+        return 0;
+    }
+    close(sockfd);
+
+
+    return 0;
+}
+
+unsigned char* get_afl_ptr(void);
+
+unsigned char* get_afl_ptr(void) {
+    return dummy;
+}
 
 void bb_enter(target_ulong cur_loc)
 {
@@ -155,6 +218,7 @@ void bb_enter(target_ulong cur_loc)
         stop_bb_enter();
         return;
     } else if (state == 3) {
+        client_send_bitmap();
         for (int i = 0; i < MAP_SIZE; i++){
             printf("%d:  %d\n", i, afl_area_ptr[i]);
         }
