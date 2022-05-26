@@ -10,6 +10,7 @@ void stop_bb_enter(void);
 void start_bb_enter(void);
 void clear_bb_enter(void);
 void save_bb_enter(void);
+void real_start_bb_enter(void);
 int get_started_bb(void);
 
 void stop_bb_enter(void)
@@ -19,7 +20,7 @@ void stop_bb_enter(void)
 
 void start_bb_enter(void)
 {
-    state = 1;
+    state = 4;
 }
 
 void clear_bb_enter(void)
@@ -30,6 +31,10 @@ void clear_bb_enter(void)
 void save_bb_enter(void)
 {
     state = 3;
+}
+
+void real_start_bb_enter(void){
+    state = 1;
 }
 
 int get_started_bb(void)

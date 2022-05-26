@@ -70,10 +70,10 @@
 #include "exec/exec-all.h"
 #include "exec/plugin-gen.h"
 #include "exec/translator.h"
+#include "bb-enter-helper.h"
 
 
 #define AFL_rotl64(x, r) (((x) << (r)) | ((x) >> (64 - (r))))
-#include "bb-enter-helper.h"
 target_ulong afl_prev_loc = 0;
 #define MAP_SIZE (1U << 16)
 #define INC_AFL_AREA(loc) afl_area_ptr[loc]++
@@ -169,7 +169,7 @@ int client_send_bitmap(void)
     memset(&serv_addr, '0', sizeof(serv_addr)); 
 
     serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons(5000); 
+    serv_addr.sin_port = htons(5001); 
 
     if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)<=0)
     {
@@ -191,9 +191,9 @@ int client_send_bitmap(void)
  //   size_t write_result = write(sockfd, &sendArray, sizeof(unsigned char)*2050);
     size_t write_result = write(sockfd, &dummy, sizeof(unsigned char)*MAP_SIZE);
     if (write_result) {
+        close(sockfd);
         return 0;
     }
-    close(sockfd);
 
 
     return 0;
@@ -219,9 +219,9 @@ void bb_enter(target_ulong cur_loc)
         return;
     } else if (state == 3) {
         client_send_bitmap();
-        for (int i = 0; i < MAP_SIZE; i++){
-            printf("%d:  %d\n", i, afl_area_ptr[i]);
-        }
+//        for (int i = 0; i < MAP_SIZE; i++){
+//            printf("%d:  %d\n", i, afl_area_ptr[i]);
+//        }
         clear_bb_enter();
     }
 //    printf("%" PRIu32 "\n", (uint32_t) cur_loc);
@@ -1618,6 +1618,10 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
     tcg_func_start(tcg_ctx);
 
     tcg_ctx->cpu = env_cpu(env);
+    if (get_started_bb()==4){
+        tb_flush(cpu);
+        real_start_bb_enter();
+    }
     bb_enter(pc);
     gen_intermediate_code(cpu, tb, max_insns);
     assert(tb->size != 0);
