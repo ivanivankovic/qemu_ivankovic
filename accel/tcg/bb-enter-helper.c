@@ -5,7 +5,7 @@
 // 2 - clear -> 0
 // 3 - save -> clear
 
-int state = 0;
+int state = -1;
 void stop_bb_enter(void);
 void start_bb_enter(void);
 void clear_bb_enter(void);
@@ -20,7 +20,7 @@ void stop_bb_enter(void)
 
 void start_bb_enter(void)
 {
-    state = 4;
+    state = 1;
 }
 
 void clear_bb_enter(void)

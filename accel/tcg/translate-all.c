@@ -158,7 +158,7 @@ int client_send_bitmap(void)
     int sockfd = 0;
     char recvBuff[1024];
     struct sockaddr_in serv_addr; 
-
+    printf("Sending bitmap to afl_proxy!");
     memset(recvBuff, '0',sizeof(recvBuff));
     if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
     {
@@ -190,11 +190,12 @@ int client_send_bitmap(void)
 
  //   size_t write_result = write(sockfd, &sendArray, sizeof(unsigned char)*2050);
     size_t write_result = write(sockfd, &dummy, sizeof(unsigned char)*MAP_SIZE);
+    printf("Sent bitmap. Write result is: %lu\n", write_result);
     if (write_result) {
         close(sockfd);
         return 0;
     }
-
+    close(sockfd);
 
     return 0;
 }
@@ -1498,6 +1499,7 @@ static TranslationBlock *
 tb_link_page(TranslationBlock *tb, tb_page_addr_t phys_pc,
              tb_page_addr_t phys_page2)
 {
+    if (get_started_bb() != -1) return tb;
     PageDesc *p;
     PageDesc *p2 = NULL;
     void *existing_tb = NULL;
@@ -1614,14 +1616,15 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
     if (unlikely(gen_code_size != 0)) {
         goto error_return;
     }
-
+//    if (get_started_bb()==4){
+//        tb_flush(cpu);
+//        real_start_bb_enter();
+//        printf("Real start.");
+//    }
     tcg_func_start(tcg_ctx);
 
     tcg_ctx->cpu = env_cpu(env);
-    if (get_started_bb()==4){
-        tb_flush(cpu);
-        real_start_bb_enter();
-    }
+    
     bb_enter(pc);
     gen_intermediate_code(cpu, tb, max_insns);
     assert(tb->size != 0);
