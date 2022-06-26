@@ -219,11 +219,14 @@ void bb_enter(target_ulong cur_loc)
         stop_bb_enter();
         return;
     } else if (state == 3) {
+        printf("Cnt: %d. ", get_increment_cnt());
         client_send_bitmap();
 //        for (int i = 0; i < MAP_SIZE; i++){
 //            printf("%d:  %d\n", i, afl_area_ptr[i]);
 //        }
         clear_bb_enter();
+    } else if ( state != -1 ){
+        printf("Snimam\n");
     }
 //    printf("%" PRIu32 "\n", (uint32_t) cur_loc);
     cur_loc = (uintptr_t)(afl_hash_ip((uint64_t)cur_loc));

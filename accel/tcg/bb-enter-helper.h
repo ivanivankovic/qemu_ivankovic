@@ -4,3 +4,4 @@ void clear_bb_enter(void);
 void save_bb_enter(void);
 void real_start_bb_enter(void);
 int get_started_bb(void);
+int get_increment_cnt(void);

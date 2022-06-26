@@ -6,12 +6,20 @@
 // 3 - save -> clear
 
 int state = -1;
+int cnt=0;
+
 void stop_bb_enter(void);
 void start_bb_enter(void);
 void clear_bb_enter(void);
 void save_bb_enter(void);
 void real_start_bb_enter(void);
 int get_started_bb(void);
+int get_increment_cnt(void);
+
+int get_increment_cnt(void) {
+    cnt++;
+    return cnt;
+}
 
 void stop_bb_enter(void)
 {
