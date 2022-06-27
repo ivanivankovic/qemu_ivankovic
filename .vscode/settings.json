@@ -3,6 +3,23 @@
     "files.associations": {
         "*.inc": "c",
         "error-report.h": "c",
-        "tcg.h": "c"
+        "tcg.h": "c",
+        "*.tcc": "c",
+        "chrono": "c",
+        "cstdio": "c",
+        "string_view": "c",
+        "functional": "c",
+        "bb-enter-helper.h": "c",
+        "exec-all.h": "c",
+        "ram_addr.h": "c",
+        "cpu.h": "c",
+        "units.h": "c",
+        "trace.h": "c",
+        "disas.h": "c",
+        "intc.h": "c",
+        "acpi_dev_interface.h": "c",
+        "rdma.h": "c",
+        "memory-device.h": "c",
+        "qapi-commands-ui.h": "c"
     }
 }

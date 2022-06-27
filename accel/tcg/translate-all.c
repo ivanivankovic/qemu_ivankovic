@@ -183,12 +183,6 @@ int client_send_bitmap(void)
        return 1;
     }
 
-//    unsigned char sendArray[2050];
-//    for (int i= 0 ;i<2050;i++){
-//        sendArray[i] = afl_area_ptr[i];
-//    }
-
- //   size_t write_result = write(sockfd, &sendArray, sizeof(unsigned char)*2050);
     size_t write_result = write(sockfd, &dummy, sizeof(unsigned char)*MAP_SIZE);
     printf("Sent bitmap. Write result is: %lu\n", write_result);
     if (write_result) {
@@ -1502,7 +1496,13 @@ static TranslationBlock *
 tb_link_page(TranslationBlock *tb, tb_page_addr_t phys_pc,
              tb_page_addr_t phys_page2)
 {
+    // u svrhe testiranja je stavljeno moze biti i 
+    // if (get_started_bb() == 1) return tb; ali tada treba u bb-enter-helper.c postaviti inicijalnu vrijednost
+    // varijable state na 0
+    // ovo je napravljeno tako da prvi put kada se pokrene snimanje podataka da se od tog trenutka vise ne spremaju podaci.
+    // Ne cini veliku razliku, ali ovako se vise puta prevode blokovi sto je pogodnije ako nam je manje stalo do suma u podacima
     if (get_started_bb() != -1) return tb;
+    
     PageDesc *p;
     PageDesc *p2 = NULL;
     void *existing_tb = NULL;
