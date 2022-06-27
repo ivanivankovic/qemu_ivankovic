@@ -1,4 +1,11 @@
 ===========
+NOTE
+===========
+- This fork is done for thesis. Few functions are taken from 
+https://github.com/AFLplusplus/qemuafl repository because I tried to 
+implement full system code coverage tracking using their code coverage tracing as template.
+
+===========
 QEMU README
 ===========
 
